@@ -1,0 +1,1405 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOP Menu — Barista Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0d0d;
+    --surface: #161616;
+    --surface2: #1e1e1e;
+    --border: rgba(255,255,255,0.07);
+    --text: #f0ede8;
+    --muted: rgba(240,237,232,0.45);
+    --accent-tea: #a8d5a2;
+    --accent-tea-glow: rgba(168,213,162,0.15);
+    --accent-coffee: #c8935a;
+    --accent-coffee-glow: rgba(200,147,90,0.15);
+    --accent-milk: #e8b4c8;
+    --accent-milk-glow: rgba(232,180,200,0.15);
+    --accent-mixo: #85b4e8;
+    --accent-mixo-glow: rgba(133,180,232,0.15);
+    --radius: 18px;
+    --transition: 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Noise texture overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  /* HEADER */
+  header {
+    position: relative;
+    padding: 80px 40px 60px;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  header::before {
+    content: '';
+    position: absolute;
+    top: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 400px;
+    background: radial-gradient(ellipse, rgba(200,147,90,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .header-eyebrow {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent-coffee);
+    background: rgba(200,147,90,0.1);
+    border: 1px solid rgba(200,147,90,0.2);
+    padding: 6px 16px;
+    border-radius: 100px;
+    margin-bottom: 24px;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(48px, 8vw, 88px);
+    font-weight: 900;
+    line-height: 0.95;
+    letter-spacing: -2px;
+    background: linear-gradient(135deg, #f0ede8 0%, rgba(200,147,90,0.8) 50%, #f0ede8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 16px;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--accent-coffee);
+  }
+
+  .header-sub {
+    font-size: 15px;
+    color: var(--muted);
+    font-weight: 300;
+    letter-spacing: 0.5px;
+  }
+
+  /* SEARCH */
+  .search-wrap {
+    max-width: 560px;
+    margin: 40px auto 0;
+    position: relative;
+  }
+
+  .search-wrap svg {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.4;
+    pointer-events: none;
+  }
+
+  #search {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 16px 20px 16px 52px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    color: var(--text);
+    outline: none;
+    transition: var(--transition);
+  }
+
+  #search::placeholder { color: var(--muted); }
+
+  #search:focus {
+    border-color: rgba(200,147,90,0.4);
+    box-shadow: 0 0 0 4px rgba(200,147,90,0.08);
+    background: #222;
+  }
+
+  #search-count {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    transition: var(--transition);
+  }
+
+  /* FILTER TABS */
+  .filter-bar {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 32px 40px 0;
+  }
+
+  .filter-btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 8px 20px;
+    border-radius: 100px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: var(--transition);
+    letter-spacing: 0.3px;
+  }
+
+  .filter-btn:hover { color: var(--text); border-color: rgba(255,255,255,0.2); }
+
+  .filter-btn.active {
+    color: var(--bg);
+    border-color: transparent;
+  }
+
+  .filter-btn[data-series="all"].active { background: var(--text); }
+  .filter-btn[data-series="tea"].active { background: var(--accent-tea); }
+  .filter-btn[data-series="coffee"].active { background: var(--accent-coffee); }
+  .filter-btn[data-series="milk"].active { background: var(--accent-milk); }
+  .filter-btn[data-series="mixo"].active { background: var(--accent-mixo); }
+
+  /* MAIN CONTENT */
+  main {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 48px 32px 80px;
+  }
+
+  /* SECTION */
+  .series-section {
+    margin-bottom: 64px;
+    transition: var(--transition);
+  }
+
+  .series-section.hidden { display: none; }
+
+  .series-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .series-badge {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    border-radius: 100px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border: 1px solid;
+  }
+
+  .series-badge svg { width: 14px; height: 14px; }
+
+  .badge-tea { color: var(--accent-tea); border-color: rgba(168,213,162,0.3); background: var(--accent-tea-glow); }
+  .badge-coffee { color: var(--accent-coffee); border-color: rgba(200,147,90,0.3); background: var(--accent-coffee-glow); }
+  .badge-milk { color: var(--accent-milk); border-color: rgba(232,180,200,0.3); background: var(--accent-milk-glow); }
+  .badge-mixo { color: var(--accent-mixo); border-color: rgba(133,180,232,0.3); background: var(--accent-mixo-glow); }
+
+  .series-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+
+  .series-divider {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .series-count {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* CARD GRID */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+  }
+
+  /* CARD */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    cursor: pointer;
+    transition: var(--transition);
+    position: relative;
+    animation: cardIn 0.5s ease both;
+  }
+
+  @keyframes cardIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(255,255,255,0.14);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  }
+
+  .card.hidden { display: none; }
+
+  /* Card top accent bar */
+  .card-accent {
+    height: 3px;
+    width: 100%;
+  }
+
+  .card-tea .card-accent { background: linear-gradient(90deg, var(--accent-tea), transparent); }
+  .card-coffee .card-accent { background: linear-gradient(90deg, var(--accent-coffee), transparent); }
+  .card-milk .card-accent { background: linear-gradient(90deg, var(--accent-milk), transparent); }
+  .card-mixo .card-accent { background: linear-gradient(90deg, var(--accent-mixo), transparent); }
+
+  .card-header {
+    padding: 20px 22px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    line-height: 1.2;
+    flex: 1;
+  }
+
+  .card-toggle {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition);
+    flex-shrink: 0;
+    margin-left: 12px;
+    margin-top: 2px;
+  }
+
+  .card:hover .card-toggle {
+    border-color: rgba(255,255,255,0.2);
+    color: var(--text);
+  }
+
+  .card.expanded .card-toggle {
+    transform: rotate(180deg);
+    background: rgba(255,255,255,0.06);
+  }
+
+  .card-meta {
+    padding: 0 22px 18px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .meta-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 100px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+  }
+
+  /* Ingredient Count pill */
+  .ing-count {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 100px;
+  }
+
+  .card-tea .ing-count { background: var(--accent-tea-glow); color: var(--accent-tea); border: 1px solid rgba(168,213,162,0.2); }
+  .card-coffee .ing-count { background: var(--accent-coffee-glow); color: var(--accent-coffee); border: 1px solid rgba(200,147,90,0.2); }
+  .card-milk .ing-count { background: var(--accent-milk-glow); color: var(--accent-milk); border: 1px solid rgba(232,180,200,0.2); }
+  .card-mixo .ing-count { background: var(--accent-mixo-glow); color: var(--accent-mixo); border: 1px solid rgba(133,180,232,0.2); }
+
+  /* EXPANDABLE CONTENT */
+  .card-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.3s ease;
+    opacity: 0;
+  }
+
+  .card.expanded .card-body {
+    max-height: 600px;
+    opacity: 1;
+  }
+
+  .card-body-inner {
+    padding: 0 22px 22px;
+    border-top: 1px solid var(--border);
+    margin: 0 22px;
+  }
+
+  .ingredients-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 18px 0 12px;
+  }
+
+  .ingredient-list { list-style: none; }
+
+  .ingredient-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    transition: background 0.2s;
+  }
+
+  .ingredient-item:last-child { border-bottom: none; }
+
+  .ing-name {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--text);
+    text-transform: capitalize;
+  }
+
+  .ing-amount {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    text-align: right;
+  }
+
+  /* Special note / method */
+  .card-note {
+    margin-top: 14px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .card-tea .card-note { background: var(--accent-tea-glow); color: var(--accent-tea); border: 1px solid rgba(168,213,162,0.15); }
+  .card-coffee .card-note { background: var(--accent-coffee-glow); color: var(--accent-coffee); border: 1px solid rgba(200,147,90,0.15); }
+  .card-milk .card-note { background: var(--accent-milk-glow); color: var(--accent-milk); border: 1px solid rgba(232,180,200,0.15); }
+  .card-mixo .card-note { background: var(--accent-mixo-glow); color: var(--accent-mixo); border: 1px solid rgba(133,180,232,0.15); }
+
+  /* Sub recipe (like foam) */
+  .sub-recipe {
+    margin-top: 16px;
+    padding: 14px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .sub-recipe-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+
+  /* NO RESULTS */
+  .no-results {
+    display: none;
+    text-align: center;
+    padding: 80px 20px;
+    color: var(--muted);
+  }
+
+  .no-results.visible { display: block; }
+
+  .no-results-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+    opacity: 0.5;
+  }
+
+  .no-results h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    margin-bottom: 8px;
+    color: var(--text);
+    opacity: 0.5;
+  }
+
+  .no-results p { font-size: 14px; }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 32px;
+    border-top: 1px solid var(--border);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 1px;
+  }
+
+  /* HIGHLIGHT */
+  mark {
+    background: rgba(200,147,90,0.25);
+    color: var(--accent-coffee);
+    border-radius: 3px;
+    padding: 0 2px;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    header { padding: 60px 24px 40px; }
+    .filter-bar { padding: 24px 20px 0; gap: 8px; }
+    main { padding: 32px 16px 60px; }
+    .card-grid { grid-template-columns: 1fr; }
+    .series-header { flex-wrap: wrap; }
+    .series-divider { display: none; }
+    .series-count { display: none; }
+  }
+
+  /* Scroll animation stagger */
+  .card:nth-child(1) { animation-delay: 0.05s; }
+  .card:nth-child(2) { animation-delay: 0.10s; }
+  .card:nth-child(3) { animation-delay: 0.15s; }
+  .card:nth-child(4) { animation-delay: 0.20s; }
+  .card:nth-child(5) { animation-delay: 0.25s; }
+  .card:nth-child(6) { animation-delay: 0.30s; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-eyebrow">☕ Oleh : Ahmad Robi</div>
+  <h1>SOP <em>Menu</em><br>Margin Escape</h1>
+  <p class="header-sub">Resep standar & panduan pembuatan minuman</p>
+  <div class="search-wrap">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+    </svg>
+    <input type="text" id="search" placeholder="Cari menu atau bahan...">
+    <span id="search-count"></span>
+  </div>
+</header>
+
+<div class="filter-bar" id="filterBar">
+  <button class="filter-btn active" data-series="all">Semua</button>
+  <button class="filter-btn" data-series="tea">🍃 Tea Series</button>
+  <button class="filter-btn" data-series="coffee">☕ Coffee Series</button>
+  <button class="filter-btn" data-series="milk">🥛 Milk Base</button>
+  <button class="filter-btn" data-series="mixo">🍹 Mixo Series</button>
+</div>
+
+<main id="main">
+
+  <!-- TEA SERIES -->
+  <section class="series-section" data-series="tea" id="section-tea">
+    <div class="series-header">
+      <div class="series-badge badge-tea">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>
+        Tea Series
+      </div>
+      <h2 class="series-title">Tea Series</h2>
+      <div class="series-divider"></div>
+      <span class="series-count">4 menu</span>
+    </div>
+    <div class="card-grid" id="grid-tea">
+
+      <div class="card card-tea" data-name="Thai Tea" data-series="tea" data-ingredients="SKM simple syrup creamer whipcream UHT twister es batu">
+        <div class="card-accent"></div>
+        <div class="card-header">
+          <div class="card-title">Thai Tea</div>
+          <button class="card-toggle" aria-label="Toggle detail">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+        </div>
+        <div class="card-meta">
+          <span class="ing-count">5 bahan</span>
+          <span class="meta-tag">Shake</span>
+        </div>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <p class="ingredients-label">Bahan & Takaran</p>
+            <ul class="ingredient-list">
+              <li class="ingredient-item"><span class="ing-name">SKM</span><span class="ing-amount">40 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Whipcream</span><span class="ing-amount">20 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">UHT</span><span class="ing-amount">15 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Twister / Tea</span><span class="ing-amount">85 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Es Batu</span><span class="ing-amount">100 g</span></li>
+            </ul>
+            <div class="card-note">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+              Metode: <strong>Shake</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card card-tea" data-name="Lychee Tea" data-series="tea" data-ingredients="lychee syrup simple syrup tea es batu">
+        <div class="card-accent"></div>
+        <div class="card-header">
+          <div class="card-title">Lychee Tea</div>
+          <button class="card-toggle" aria-label="Toggle detail">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+        </div>
+        <div class="card-meta">
+          <span class="ing-count">4 bahan</span>
+          <span class="meta-tag">Shake</span>
+          <span class="meta-tag">Topping Lychee</span>
+        </div>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <p class="ingredients-label">Bahan & Takaran</p>
+            <ul class="ingredient-list">
+              <li class="ingredient-item"><span class="ing-name">Lychee Syrup</span><span class="ing-amount">20 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Simple Syrup</span><span class="ing-amount">20 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Tea</span><span class="ing-amount">100 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Es Batu</span><span class="ing-amount">100 g</span></li>
+            </ul>
+            <div class="card-note">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+              Shake · Topping: Lychee
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card card-tea" data-name="Lemon Tea" data-series="tea" data-ingredients="lemon syrup simple syrup tea es batu dry lemon">
+        <div class="card-accent"></div>
+        <div class="card-header">
+          <div class="card-title">Lemon Tea</div>
+          <button class="card-toggle" aria-label="Toggle detail">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+        </div>
+        <div class="card-meta">
+          <span class="ing-count">4 bahan</span>
+          <span class="meta-tag">Shake</span>
+          <span class="meta-tag">Garnish Dry Lemon</span>
+        </div>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <p class="ingredients-label">Bahan & Takaran</p>
+            <ul class="ingredient-list">
+              <li class="ingredient-item"><span class="ing-name">Lemon Syrup</span><span class="ing-amount">20 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Simple Syrup</span><span class="ing-amount">20 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Tea</span><span class="ing-amount">100 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Es Batu</span><span class="ing-amount">100 g</span></li>
+            </ul>
+            <div class="card-note">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+              Shake · Garnish: Dry Lemon
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card card-tea" data-name="Apple Tea" data-series="tea" data-ingredients="apel apple syrup simple syrup tea es batu dry apple">
+        <div class="card-accent"></div>
+        <div class="card-header">
+          <div class="card-title">Apple Tea</div>
+          <button class="card-toggle" aria-label="Toggle detail">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+        </div>
+        <div class="card-meta">
+          <span class="ing-count">4 bahan</span>
+          <span class="meta-tag">Shake</span>
+          <span class="meta-tag">Garnish Dry Apple</span>
+        </div>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <p class="ingredients-label">Bahan & Takaran</p>
+            <ul class="ingredient-list">
+              <li class="ingredient-item"><span class="ing-name">Apple Syrup</span><span class="ing-amount">15 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Simple Syrup</span><span class="ing-amount">20 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Tea</span><span class="ing-amount">100 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Es Batu</span><span class="ing-amount">100 g</span></li>
+            </ul>
+            <div class="card-note">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+              Shake · Garnish: Dry Apple
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- COFFEE SERIES -->
+  <section class="series-section" data-series="coffee" id="section-coffee">
+    <div class="series-header">
+      <div class="series-badge badge-coffee">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+        Coffee Series
+      </div>
+      <h2 class="series-title">Coffee Series</h2>
+      <div class="series-divider"></div>
+      <span class="series-count">5 menu</span>
+    </div>
+    <div class="card-grid" id="grid-coffee">
+
+      <div class="card card-coffee" data-name="Es Kopi Gula Aren" data-series="coffee" data-ingredients="gula aren whipcream freshmilk es batu kopi stir">
+        <div class="card-accent"></div>
+        <div class="card-header">
+          <div class="card-title">Es Kopi Gula Aren</div>
+          <button class="card-toggle" aria-label="Toggle detail">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+        </div>
+        <div class="card-meta">
+          <span class="ing-count">5 bahan</span>
+          <span class="meta-tag">Stir</span>
+        </div>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <p class="ingredients-label">Bahan & Takaran</p>
+            <ul class="ingredient-list">
+              <li class="ingredient-item"><span class="ing-name">Gula Aren</span><span class="ing-amount">20 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Whipcream</span><span class="ing-amount">20 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Fresh Milk</span><span class="ing-amount">100 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Es Batu</span><span class="ing-amount">secukupnya</span></li>
+              <li class="ingredient-item"><span class="ing-name">Kopi</span><span class="ing-amount">25 ml</span></li>
+            </ul>
+            <div class="card-note">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+              Metode: <strong>Stir</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card card-coffee" data-name="Es Kopi Pistachio" data-series="coffee" data-ingredients="pistachio creamer simple syrup freshmilk es batu kopi">
+        <div class="card-accent"></div>
+        <div class="card-header">
+          <div class="card-title">Es Kopi Pistachio</div>
+          <button class="card-toggle" aria-label="Toggle detail">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+        </div>
+        <div class="card-meta">
+          <span class="ing-count">6 bahan</span>
+        </div>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <p class="ingredients-label">Bahan & Takaran</p>
+            <ul class="ingredient-list">
+              <li class="ingredient-item"><span class="ing-name">Pistachio</span><span class="ing-amount">20 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Creamer</span><span class="ing-amount">20 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Simple Syrup</span><span class="ing-amount">10 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Fresh Milk</span><span class="ing-amount">100 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Es Batu</span><span class="ing-amount">secukupnya</span></li>
+              <li class="ingredient-item"><span class="ing-name">Kopi</span><span class="ing-amount">25 ml</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="card card-coffee" data-name="Butterscotch Coffee" data-series="coffee" data-ingredients="butterscotch butter scotch vanilla creamer freshmilk kopi es batu foam cream cheese susu">
+        <div class="card-accent"></div>
+        <div class="card-header">
+          <div class="card-title">Butterscotch Coffee</div>
+          <button class="card-toggle" aria-label="Toggle detail">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+        </div>
+        <div class="card-meta">
+          <span class="ing-count">6 bahan</span>
+          <span class="meta-tag">Foam</span>
+          <span class="meta-tag">Garnish</span>
+        </div>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <p class="ingredients-label">Bahan & Takaran</p>
+            <ul class="ingredient-list">
+              <li class="ingredient-item"><span class="ing-name">Butterscotch</span><span class="ing-amount">15 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Vanilla</span><span class="ing-amount">5 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Creamer</span><span class="ing-amount">20 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Fresh Milk</span><span class="ing-amount">80–100 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Kopi</span><span class="ing-amount">25–30 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Es Batu</span><span class="ing-amount">secukupnya</span></li>
+            </ul>
+            <div class="sub-recipe">
+              <p class="sub-recipe-title">🥄 Resep Foam</p>
+              <ul class="ingredient-list">
+                <li class="ingredient-item"><span class="ing-name">Butterscotch</span><span class="ing-amount">15 ml</span></li>
+                <li class="ingredient-item"><span class="ing-name">Susu</span><span class="ing-amount">50 ml</span></li>
+                <li class="ingredient-item"><span class="ing-name">Cream Cheese</span><span class="ing-amount">5 g</span></li>
+              </ul>
+            </div>
+            <div class="card-note">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+              Top foam · Garnish: Palm sugar / Marie
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card card-coffee" data-name="Vanilla Coffee" data-series="coffee" data-ingredients="vanilla syrup creamer simple syrup freshmilk es batu kopi">
+        <div class="card-accent"></div>
+        <div class="card-header">
+          <div class="card-title">Vanilla Coffee</div>
+          <button class="card-toggle" aria-label="Toggle detail">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+        </div>
+        <div class="card-meta">
+          <span class="ing-count">6 bahan</span>
+        </div>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <p class="ingredients-label">Bahan & Takaran</p>
+            <ul class="ingredient-list">
+              <li class="ingredient-item"><span class="ing-name">Vanilla Syrup</span><span class="ing-amount">20 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Creamer</span><span class="ing-amount">20 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Simple Syrup</span><span class="ing-amount">10 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Fresh Milk</span><span class="ing-amount">100 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Es Batu</span><span class="ing-amount">secukupnya</span></li>
+              <li class="ingredient-item"><span class="ing-name">Kopi</span><span class="ing-amount">25 ml</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="card card-coffee" data-name="Caramel Coffee" data-series="coffee" data-ingredients="caramel syrup creamer simple syrup freshmilk es batu kopi">
+        <div class="card-accent"></div>
+        <div class="card-header">
+          <div class="card-title">Caramel Coffee</div>
+          <button class="card-toggle" aria-label="Toggle detail">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+        </div>
+        <div class="card-meta">
+          <span class="ing-count">6 bahan</span>
+        </div>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <p class="ingredients-label">Bahan & Takaran</p>
+            <ul class="ingredient-list">
+              <li class="ingredient-item"><span class="ing-name">Caramel Syrup</span><span class="ing-amount">10 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Creamer</span><span class="ing-amount">20 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Simple Syrup</span><span class="ing-amount">10 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Fresh Milk</span><span class="ing-amount">100 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Es Batu</span><span class="ing-amount">secukupnya</span></li>
+              <li class="ingredient-item"><span class="ing-name">Kopi</span><span class="ing-amount">25 ml</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- MILK BASE -->
+  <section class="series-section" data-series="milk" id="section-milk">
+    <div class="series-header">
+      <div class="series-badge badge-milk">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2h8M7 6l1 12a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1l1-12"/><path d="M5 6h14"/></svg>
+        Milk Base
+      </div>
+      <h2 class="series-title">Milk Base</h2>
+      <div class="series-divider"></div>
+      <span class="series-count">6 menu</span>
+    </div>
+    <div class="card-grid" id="grid-milk">
+
+      <div class="card card-milk" data-name="Red Velvet" data-series="milk" data-ingredients="powder simple syrup cream cheese air panas es batu creamer UHT">
+        <div class="card-accent"></div>
+        <div class="card-header">
+          <div class="card-title">Red Velvet</div>
+          <button class="card-toggle" aria-label="Toggle detail">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+        </div>
+        <div class="card-meta">
+          <span class="ing-count">7 bahan</span>
+          <span class="meta-tag">Cream Cheese</span>
+        </div>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <p class="ingredients-label">Bahan & Takaran</p>
+            <ul class="ingredient-list">
+              <li class="ingredient-item"><span class="ing-name">Powder</span><span class="ing-amount">15 g</span></li>
+              <li class="ingredient-item"><span class="ing-name">Simple Syrup</span><span class="ing-amount">15 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Cream Cheese</span><span class="ing-amount">5 g</span></li>
+              <li class="ingredient-item"><span class="ing-name">Air Panas</span><span class="ing-amount">20 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Es Batu</span><span class="ing-amount">secukupnya</span></li>
+              <li class="ingredient-item"><span class="ing-name">Creamer</span><span class="ing-amount">20 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">UHT</span><span class="ing-amount">100 ml</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="card card-milk" data-name="Chocolate" data-series="milk" data-ingredients="powder coklat simple syrup air panas es batu creamer UHT">
+        <div class="card-accent"></div>
+        <div class="card-header">
+          <div class="card-title">Chocolate</div>
+          <button class="card-toggle" aria-label="Toggle detail">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+        </div>
+        <div class="card-meta">
+          <span class="ing-count">6 bahan</span>
+        </div>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <p class="ingredients-label">Bahan & Takaran</p>
+            <ul class="ingredient-list">
+              <li class="ingredient-item"><span class="ing-name">Powder</span><span class="ing-amount">15 g</span></li>
+              <li class="ingredient-item"><span class="ing-name">Simple Syrup</span><span class="ing-amount">20 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Air Panas</span><span class="ing-amount">20 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Es Batu</span><span class="ing-amount">secukupnya</span></li>
+              <li class="ingredient-item"><span class="ing-name">Creamer</span><span class="ing-amount">20 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">UHT</span><span class="ing-amount">100 ml</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="card card-milk" data-name="Taro" data-series="milk" data-ingredients="powder taro simple syrup air panas es batu creamer UHT">
+        <div class="card-accent"></div>
+        <div class="card-header">
+          <div class="card-title">Taro</div>
+          <button class="card-toggle" aria-label="Toggle detail">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+        </div>
+        <div class="card-meta">
+          <span class="ing-count">6 bahan</span>
+        </div>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <p class="ingredients-label">Bahan & Takaran</p>
+            <ul class="ingredient-list">
+              <li class="ingredient-item"><span class="ing-name">Powder</span><span class="ing-amount">20 g</span></li>
+              <li class="ingredient-item"><span class="ing-name">Simple Syrup</span><span class="ing-amount">20 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Air Panas</span><span class="ing-amount">20 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Es Batu</span><span class="ing-amount">secukupnya</span></li>
+              <li class="ingredient-item"><span class="ing-name">Creamer</span><span class="ing-amount">20 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">UHT</span><span class="ing-amount">100 ml</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="card card-milk" data-name="Matcha" data-series="milk" data-ingredients="powder matcha simple syrup air panas es batu creamer UHT">
+        <div class="card-accent"></div>
+        <div class="card-header">
+          <div class="card-title">Matcha</div>
+          <button class="card-toggle" aria-label="Toggle detail">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+        </div>
+        <div class="card-meta">
+          <span class="ing-count">6 bahan</span>
+        </div>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <p class="ingredients-label">Bahan & Takaran</p>
+            <ul class="ingredient-list">
+              <li class="ingredient-item"><span class="ing-name">Powder</span><span class="ing-amount">15 g</span></li>
+              <li class="ingredient-item"><span class="ing-name">Simple Syrup</span><span class="ing-amount">20 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Air Panas</span><span class="ing-amount">20 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Es Batu</span><span class="ing-amount">secukupnya</span></li>
+              <li class="ingredient-item"><span class="ing-name">Creamer</span><span class="ing-amount">20 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">UHT</span><span class="ing-amount">100 ml</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="card card-milk" data-name="Choco Berry" data-series="milk" data-ingredients="strawberry jam syrup chocolate powder simple syrup air panas es batu creamer UHT">
+        <div class="card-accent"></div>
+        <div class="card-header">
+          <div class="card-title">Choco Berry</div>
+          <button class="card-toggle" aria-label="Toggle detail">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+        </div>
+        <div class="card-meta">
+          <span class="ing-count">8 bahan</span>
+        </div>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <p class="ingredients-label">Bahan & Takaran</p>
+            <ul class="ingredient-list">
+              <li class="ingredient-item"><span class="ing-name">Strawberry Jam</span><span class="ing-amount">15 g</span></li>
+              <li class="ingredient-item"><span class="ing-name">Syrup Strawberry</span><span class="ing-amount">10 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Chocolate Powder</span><span class="ing-amount">15 g</span></li>
+              <li class="ingredient-item"><span class="ing-name">Simple Syrup</span><span class="ing-amount">20 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Air Panas</span><span class="ing-amount">20 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Es Batu</span><span class="ing-amount">secukupnya</span></li>
+              <li class="ingredient-item"><span class="ing-name">Creamer</span><span class="ing-amount">20 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">UHT</span><span class="ing-amount">100 ml</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="card card-milk" data-name="Matcha Berry" data-series="milk" data-ingredients="strawberry jam syrup matcha powder simple syrup air panas UHT es batu">
+        <div class="card-accent"></div>
+        <div class="card-header">
+          <div class="card-title">Matcha Berry</div>
+          <button class="card-toggle" aria-label="Toggle detail">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+        </div>
+        <div class="card-meta">
+          <span class="ing-count">7 bahan</span>
+        </div>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <p class="ingredients-label">Bahan & Takaran</p>
+            <ul class="ingredient-list">
+              <li class="ingredient-item"><span class="ing-name">Strawberry Jam</span><span class="ing-amount">15 g</span></li>
+              <li class="ingredient-item"><span class="ing-name">Strawberry Syrup</span><span class="ing-amount">15 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Matcha Powder</span><span class="ing-amount">15 g</span></li>
+              <li class="ingredient-item"><span class="ing-name">Simple Syrup</span><span class="ing-amount">20 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Air Panas</span><span class="ing-amount">20 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">UHT</span><span class="ing-amount">100 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Es Batu</span><span class="ing-amount">secukupnya</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- MIXO SERIES -->
+  <section class="series-section" data-series="mixo" id="section-mixo">
+    <div class="series-header">
+      <div class="series-badge badge-mixo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 22H5a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h3"/><path d="M16 22h3a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2h-3"/><path d="M12 17v5M8 17h8M5 12h14M5 7h14"/></svg>
+        Mixo Series
+      </div>
+      <h2 class="series-title">Mixo Series</h2>
+      <div class="series-divider"></div>
+      <span class="series-count">6 menu</span>
+    </div>
+    <div class="card-grid" id="grid-mixo">
+
+      <div class="card card-mixo" data-name="Apple Thing" data-series="mixo" data-ingredients="apple syrup kiwi syrup bolavita peach simple syrup es batu soda">
+        <div class="card-accent"></div>
+        <div class="card-header">
+          <div class="card-title">Apple Thing</div>
+          <button class="card-toggle" aria-label="Toggle detail">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+        </div>
+        <div class="card-meta">
+          <span class="ing-count">6 bahan</span>
+          <span class="meta-tag">Shake</span>
+          <span class="meta-tag">Top Soda</span>
+        </div>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <p class="ingredients-label">Bahan & Takaran</p>
+            <ul class="ingredient-list">
+              <li class="ingredient-item"><span class="ing-name">Apple Syrup</span><span class="ing-amount">15 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Kiwi Syrup</span><span class="ing-amount">10 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Bolavita Peach</span><span class="ing-amount">10 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Simple Syrup</span><span class="ing-amount">10 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Es Batu</span><span class="ing-amount">secukupnya</span></li>
+              <li class="ingredient-item"><span class="ing-name">Top Up Soda</span><span class="ing-amount">60 ml</span></li>
+            </ul>
+            <div class="card-note">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+              Shake · Top Up Soda 60ml
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card card-mixo" data-name="Candy Creamy" data-series="mixo" data-ingredients="kembang gula syrup kiwi syrup hydro choco es batu cold powder susu pistachio">
+        <div class="card-accent"></div>
+        <div class="card-header">
+          <div class="card-title">Candy Creamy</div>
+          <button class="card-toggle" aria-label="Toggle detail">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+        </div>
+        <div class="card-meta">
+          <span class="ing-count">4 bahan</span>
+          <span class="meta-tag">Aduk</span>
+          <span class="meta-tag">Froster</span>
+        </div>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <p class="ingredients-label">Bahan & Takaran</p>
+            <ul class="ingredient-list">
+              <li class="ingredient-item"><span class="ing-name">Kembang Gula Syrup</span><span class="ing-amount">10 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Kiwi Syrup</span><span class="ing-amount">20 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Hydro Choco</span><span class="ing-amount">60 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Es Batu</span><span class="ing-amount">secukupnya</span></li>
+            </ul>
+            <div class="sub-recipe">
+              <p class="sub-recipe-title">❄️ Froster (Top Up)</p>
+              <ul class="ingredient-list">
+                <li class="ingredient-item"><span class="ing-name">Cold Powder</span><span class="ing-amount">10 g</span></li>
+                <li class="ingredient-item"><span class="ing-name">Susu</span><span class="ing-amount">50 ml</span></li>
+                <li class="ingredient-item"><span class="ing-name">Pistachio</span><span class="ing-amount">2 ml</span></li>
+              </ul>
+            </div>
+            <div class="card-note">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+              Aduk · Top froster
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card card-mixo" data-name="Pink Blaster" data-series="mixo" data-ingredients="strawberry syrup caramel syrup kembang gula syrup creamer UHT shake jam grater">
+        <div class="card-accent"></div>
+        <div class="card-header">
+          <div class="card-title">Pink Blaster</div>
+          <button class="card-toggle" aria-label="Toggle detail">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+        </div>
+        <div class="card-meta">
+          <span class="ing-count">5 bahan</span>
+          <span class="meta-tag">Shake</span>
+          <span class="meta-tag">Garnish</span>
+        </div>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <p class="ingredients-label">Bahan & Takaran</p>
+            <ul class="ingredient-list">
+              <li class="ingredient-item"><span class="ing-name">Strawberry Syrup</span><span class="ing-amount">20 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Caramel Syrup</span><span class="ing-amount">10 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Kembang Gula Syrup</span><span class="ing-amount">10 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Creamer</span><span class="ing-amount">30 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">UHT</span><span class="ing-amount">90 ml</span></li>
+            </ul>
+            <div class="card-note">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+              Shake · Gelas digarnish Strawberry Jam + Grater
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card card-mixo" data-name="Peach Americano" data-series="mixo" data-ingredients="jus jeruk peach persik syrup simple syrup espresso arab es batu shake">
+        <div class="card-accent"></div>
+        <div class="card-header">
+          <div class="card-title">Peach Americano</div>
+          <button class="card-toggle" aria-label="Toggle detail">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+        </div>
+        <div class="card-meta">
+          <span class="ing-count">5 bahan</span>
+          <span class="meta-tag">Shake</span>
+          <span class="meta-tag">Espresso Arab</span>
+        </div>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <p class="ingredients-label">Bahan & Takaran</p>
+            <ul class="ingredient-list">
+              <li class="ingredient-item"><span class="ing-name">Jus Jeruk</span><span class="ing-amount">60 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Peach / Persik Syrup</span><span class="ing-amount">15 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Simple Syrup</span><span class="ing-amount">15 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Espresso Arab</span><span class="ing-amount">20 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Es Batu</span><span class="ing-amount">secukupnya</span></li>
+            </ul>
+            <div class="card-note">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+              Metode: <strong>Shake</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card card-mixo" data-name="Applepresso" data-series="mixo" data-ingredients="jus apel apple syrup simple syrup espresso arab shake soda dry apple garnish">
+        <div class="card-accent"></div>
+        <div class="card-header">
+          <div class="card-title">Applepresso</div>
+          <button class="card-toggle" aria-label="Toggle detail">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+        </div>
+        <div class="card-meta">
+          <span class="ing-count">5 bahan</span>
+          <span class="meta-tag">Shake</span>
+          <span class="meta-tag">Top Soda</span>
+          <span class="meta-tag">Garnish</span>
+        </div>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <p class="ingredients-label">Bahan & Takaran</p>
+            <ul class="ingredient-list">
+              <li class="ingredient-item"><span class="ing-name">Jus Apel</span><span class="ing-amount">30 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Apple Syrup</span><span class="ing-amount">15 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Simple Syrup</span><span class="ing-amount">20 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Espresso Arab</span><span class="ing-amount">20 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Top Up Soda</span><span class="ing-amount">50 ml</span></li>
+            </ul>
+            <div class="card-note">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+              Shake · Top Up Soda · Garnish: Dry Apple
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card card-mixo" data-name="Berrycano" data-series="mixo" data-ingredients="strawberry jam syrup madu air espresso arab shake">
+        <div class="card-accent"></div>
+        <div class="card-header">
+          <div class="card-title">Berrycano</div>
+          <button class="card-toggle" aria-label="Toggle detail">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+        </div>
+        <div class="card-meta">
+          <span class="ing-count">5 bahan</span>
+          <span class="meta-tag">Shake</span>
+          <span class="meta-tag">Espresso Arab</span>
+        </div>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <p class="ingredients-label">Bahan & Takaran</p>
+            <ul class="ingredient-list">
+              <li class="ingredient-item"><span class="ing-name">Strawberry Jam</span><span class="ing-amount">15 g</span></li>
+              <li class="ingredient-item"><span class="ing-name">Syrup Strawberry</span><span class="ing-amount">15 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Madu</span><span class="ing-amount">10 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Air</span><span class="ing-amount">80 ml</span></li>
+              <li class="ingredient-item"><span class="ing-name">Espresso Arab</span><span class="ing-amount">20 ml</span></li>
+            </ul>
+            <div class="card-note">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+              Metode: <strong>Shake</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="no-results" id="noResults">
+    <div class="no-results-icon">🔍</div>
+    <h3>Tidak ditemukan</h3>
+    <p>Coba kata kunci lain atau pilih series yang berbeda</p>
+  </div>
+
+</main>
+
+<footer>
+  Made with ❤ · SOP Barista Guide · <span id="totalCount">21 menu</span>
+</footer>
+
+<script>
+  // Toggle card expand
+  document.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('click', function(e) {
+      if (e.target.closest('.card-toggle') || !this.contains(e.target) || e.target === this) {
+        toggleCard(this);
+        return;
+      }
+      toggleCard(this);
+    });
+  });
+
+  function toggleCard(card) {
+    const isExpanded = card.classList.contains('expanded');
+    // Close all others (optional: comment out for multi-expand)
+    // document.querySelectorAll('.card.expanded').forEach(c => c !== card && c.classList.remove('expanded'));
+    card.classList.toggle('expanded', !isExpanded);
+  }
+
+  // Filter tabs
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  let activeFilter = 'all';
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      activeFilter = this.dataset.series;
+      applyFilters();
+    });
+  });
+
+  // Search
+  const searchInput = document.getElementById('search');
+  const searchCount = document.getElementById('search-count');
+  let searchTerm = '';
+
+  searchInput.addEventListener('input', function() {
+    searchTerm = this.value.toLowerCase().trim();
+    applyFilters();
+  });
+
+  function applyFilters() {
+    let totalVisible = 0;
+
+    document.querySelectorAll('.series-section').forEach(section => {
+      const series = section.dataset.series;
+      const showSection = activeFilter === 'all' || activeFilter === series;
+
+      let sectionVisible = 0;
+
+      section.querySelectorAll('.card').forEach(card => {
+        const name = card.dataset.name.toLowerCase();
+        const ingredients = card.dataset.ingredients.toLowerCase();
+        const matchSearch = !searchTerm || name.includes(searchTerm) || ingredients.includes(searchTerm);
+        const visible = showSection && matchSearch;
+
+        card.classList.toggle('hidden', !visible);
+        if (visible) sectionVisible++;
+      });
+
+      // Highlight search matches in card titles and ingredient names
+      if (searchTerm) {
+        section.querySelectorAll('.card:not(.hidden)').forEach(card => {
+          highlightText(card, searchTerm);
+        });
+      } else {
+        section.querySelectorAll('.card').forEach(card => {
+          removeHighlight(card);
+        });
+      }
+
+      section.classList.toggle('hidden', sectionVisible === 0);
+      totalVisible += sectionVisible;
+
+      // Update section count
+      const countEl = section.querySelector('.series-count');
+      if (countEl) {
+        const total = section.querySelectorAll('.card').length;
+        countEl.textContent = sectionVisible === total ? `${total} menu` : `${sectionVisible}/${total} menu`;
+      }
+    });
+
+    // No results
+    document.getElementById('noResults').classList.toggle('visible', totalVisible === 0);
+
+    // Search count
+    if (searchTerm) {
+      searchCount.textContent = `${totalVisible} hasil`;
+    } else {
+      searchCount.textContent = '';
+    }
+  }
+
+  function highlightText(card, term) {
+    removeHighlight(card);
+    const title = card.querySelector('.card-title');
+    if (title) {
+      const text = title.textContent;
+      const regex = new RegExp(`(${escapeRegex(term)})`, 'gi');
+      if (regex.test(text)) {
+        title.innerHTML = text.replace(new RegExp(`(${escapeRegex(term)})`, 'gi'), '<mark>$1</mark>');
+      }
+    }
+    card.querySelectorAll('.ing-name').forEach(el => {
+      const text = el.textContent;
+      const regex = new RegExp(`(${escapeRegex(term)})`, 'gi');
+      if (regex.test(text)) {
+        el.innerHTML = text.replace(new RegExp(`(${escapeRegex(term)})`, 'gi'), '<mark>$1</mark>');
+      }
+    });
+  }
+
+  function removeHighlight(card) {
+    const title = card.querySelector('.card-title');
+    if (title) title.textContent = title.textContent;
+    // Rebuild from data attribute for title
+    const name = card.dataset.name;
+    if (title && title.innerHTML.includes('<mark>')) {
+      title.textContent = name;
+    }
+    card.querySelectorAll('.ing-name').forEach(el => {
+      if (el.innerHTML.includes('<mark>')) {
+        el.textContent = el.textContent;
+      }
+    });
+  }
+
+  function escapeRegex(string) {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  }
+
+  // Keyboard shortcut: / to focus search
+  document.addEventListener('keydown', e => {
+    if (e.key === '/' && document.activeElement !== searchInput) {
+      e.preventDefault();
+      searchInput.focus();
+      searchInput.select();
+    }
+    if (e.key === 'Escape') {
+      searchInput.blur();
+      searchInput.value = '';
+      searchTerm = '';
+      applyFilters();
+    }
+  });
+</script>
+
+</body>
+</html>
